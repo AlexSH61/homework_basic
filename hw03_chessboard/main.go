@@ -13,6 +13,6 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(board.BoardSize(size))
+	fmt.Println(board.Boardsize(size))
 	// Place your code here.
 }
