@@ -14,5 +14,4 @@ func main() {
 		panic(err)
 	}
 	fmt.Println(board.Boardsize(size))
-	// Place your code here.
 }
