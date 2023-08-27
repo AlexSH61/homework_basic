@@ -9,9 +9,8 @@ func Boardsize(size int) string {
 		for j := 0; j < size; j++ {
 			if (i+j)%2 == 0 {
 				board += "#"
-			} else {
-				board += " "
 			}
+			board += " "
 		}
 		board += "\n"
 	}
