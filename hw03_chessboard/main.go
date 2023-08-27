@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/AlexSH61/homework_basic/hw03_chessboard/board"
 )
@@ -13,5 +14,6 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+	defer os.Stdin.Close()
 	fmt.Println(board.Boardsize(size))
 }
