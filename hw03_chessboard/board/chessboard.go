@@ -1,18 +1,20 @@
 package board
 
-import "fmt"
+import (
+	"strings"
+)
 
 func Boardsize(size int) string {
-	var board string
+	sb := &strings.Builder{}
 
 	for i := 0; i < size; i++ {
 		for j := 0; j < size; j++ {
 			if (i+j)%2 == 0 {
-				board += "#"
+				sb.WriteString("#")
 			}
-			board += " "
+			sb.WriteString(" ")
 		}
-		board += "\n"
+		sb.WriteString("\n")
 	}
-	return fmt.Sprintf("%s\n", board)
+	return sb.String()
 }

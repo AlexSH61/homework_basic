@@ -12,8 +12,8 @@ func main() {
 	var size int
 	_, err := fmt.Scanf("%d", &size)
 	if err != nil {
-		panic(err)
+		fmt.Println("incorrect input, please try again")
 	}
-	defer os.Stdin.Close()
+	defer os.Exit(size)
 	fmt.Println(board.Boardsize(size))
 }
