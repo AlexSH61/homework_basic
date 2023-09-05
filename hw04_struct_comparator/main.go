@@ -17,5 +17,4 @@ func main() {
 	fmt.Println(SecondBook)
 	bc := comparator.BookComparison{Mode: (comparator.ByRating)}
 	fmt.Println(bc.Compare(*FirstBook, *SecondBook))
-
 }
