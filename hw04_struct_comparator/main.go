@@ -15,6 +15,6 @@ func main() {
 	SecondBook := book.NewBook(2, "Crime and Punishment", "Fyodor Dostoevsky", 1866, 671, 4.5)
 	fmt.Println(FirstBook.GetAuthor())
 	fmt.Println(SecondBook)
-	bc := comparator.BookComparison{Mode: (comparator.ByRating)}
+	bc := comparator.NewCompare(comparator.ByRating)
 	fmt.Println(bc.Compare(*FirstBook, *SecondBook))
 }

@@ -13,17 +13,17 @@ const (
 
 // create const struct.
 type BookComparison struct {
-	Mode ByWhat
+	mode ByWhat
 }
 
 // create const constructor.
-func NewCompare(Mode ByWhat) *BookComparison {
-	return &BookComparison{Mode}
+func NewCompare(mode ByWhat) *BookComparison {
+	return &BookComparison{mode}
 }
 
 // creat method сomprasion.
 func (bc *BookComparison) Compare(FirstBook, SecondBook book.Book) bool {
-	switch bc.Mode {
+	switch bc.mode {
 	case ByYear:
 		return book.Book.GetYear(FirstBook) > book.Book.GetYear(SecondBook)
 	case BySize:
