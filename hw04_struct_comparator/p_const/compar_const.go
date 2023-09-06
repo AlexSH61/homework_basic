@@ -22,14 +22,14 @@ func NewCompare(mode ByWhat) *BookComparison {
 }
 
 // creat method сomprasion.
-func (bc *BookComparison) Compare(FirstBook, SecondBook book.Book) bool {
+func (bc *BookComparison) Compare(firstBook, secondBook book.Book) bool {
 	switch bc.mode {
 	case ByYear:
-		return FirstBook.GetYear() > SecondBook.GetYear()
+		return firstBook.GetYear() > secondBook.GetYear()
 	case BySize:
-		return FirstBook.GetSize() > SecondBook.GetSize()
+		return firstBook.GetSize() > secondBook.GetSize()
 	case ByRating:
-		return FirstBook.GetRating() > FirstBook.GetRating()
+		return firstBook.GetRating() > secondBook.GetRating()
 	default:
 		return false
 	}
