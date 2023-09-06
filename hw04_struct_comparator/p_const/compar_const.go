@@ -25,13 +25,12 @@ func NewCompare(mode ByWhat) *BookComparison {
 func (bc *BookComparison) Compare(FirstBook, SecondBook book.Book) bool {
 	switch bc.mode {
 	case ByYear:
-		return book.Book.GetYear(FirstBook) > book.Book.GetYear(SecondBook)
+		return FirstBook.GetYear() > SecondBook.GetYear()
 	case BySize:
-		return book.Book.GetSize(FirstBook) > book.Book.GetSize(SecondBook)
+		return FirstBook.GetSize() > SecondBook.GetSize()
 	case ByRating:
-		return book.Book.GetRating(FirstBook) > book.Book.GetRating(SecondBook)
+		return FirstBook.GetRating() > FirstBook.GetRating()
 	default:
-		// panic("incorrect mode").
 		return false
 	}
 }
