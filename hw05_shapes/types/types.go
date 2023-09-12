@@ -59,15 +59,3 @@ func NewRactangle(width, height float64) (*Rectangle, error) {
 func (r *Rectangle) Area() float64 {
 	return r.width * r.height
 }
-
-// type Square struct {
-// 	side float64
-// }
-// func NewSquare(side float64) *Square{
-// 	return &Square{
-// 		side: side,
-// 	}
-// }
-// func (s Square)  float64 {
-// 	return s.side * s.side
-// }
