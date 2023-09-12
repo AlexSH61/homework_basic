@@ -1,4 +1,4 @@
-package printArea
+package printarea
 
 import (
 	"fmt"
