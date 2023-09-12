@@ -3,8 +3,8 @@ package main
 import (
 	"fmt"
 
-	printarea "github.com/AlexSH61/homework_basic/calculateArea"
-	"github.com/AlexSH61/homework_basic/types"
+	calculatearea "github.com/AlexSH61/homework_basic/hw05_shapes/calculateArea"
+	"github.com/AlexSH61/homework_basic/hw05_shapes/types"
 )
 
 func main() {
@@ -20,21 +20,21 @@ func main() {
 	if err != nil {
 		fmt.Println("Error", err)
 	}
-	areaCircle, err := printarea.CalculateAre(circle)
+	areaCircle, err := calculatearea.CalculateAre(circle)
 	if err != nil {
 		fmt.Println("error", err)
 	} else {
 		fmt.Printf("%T: ", circle)
 		fmt.Println("Area:", areaCircle)
 	}
-	areaRectangle, err := printarea.CalculateAre(rectangle)
+	areaRectangle, err := calculatearea.CalculateAre(rectangle)
 	if err != nil {
 		fmt.Println("error", err)
 	} else {
 		fmt.Printf("%T: ", rectangle)
 		fmt.Println("Area:", areaRectangle)
 	}
-	areaTringle, err := printarea.CalculateAre(triangle)
+	areaTringle, err := calculatearea.CalculateAre(triangle)
 	if err != nil {
 		fmt.Println("error", err)
 	} else {

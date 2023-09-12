@@ -1,12 +1,12 @@
-package printarea
+package calculatearea
 
 import (
 	"fmt"
 
-	"github.com/AlexSH61/homework_basic/types"
+	"github.com/AlexSH61/homework_basic/hw05_shapes/types"
 )
 
-func CalculateAre(shape types.Shape) (float64, error) {
+func CalculateAre(shape any) (float64, error) {
 	if shape, ok := shape.(types.Shape); ok {
 		return shape.Area(), nil
 	}

@@ -20,6 +20,7 @@ func NewCircle(radius float64) (*Circle, error) {
 		radius: radius,
 	}, nil
 }
+
 func (c *Circle) Area() float64 {
 	return c.radius * c.radius * math.Pi
 }
@@ -38,6 +39,7 @@ func NewTriangle(base, height float64) (*Triangle, error) {
 		height: height,
 	}, nil
 }
+
 func (t *Triangle) Area() float64 {
 	return t.height * t.base / 2
 }
@@ -56,6 +58,7 @@ func NewRactangle(width, height float64) (*Rectangle, error) {
 		height: height,
 	}, nil
 }
+
 func (r *Rectangle) Area() float64 {
 	return r.width * r.height
 }
