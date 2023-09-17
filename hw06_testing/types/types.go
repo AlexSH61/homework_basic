@@ -1,9 +1,12 @@
 package types
 
 import (
-	"fmt"
+	"errors"
 	"math"
 )
+
+var ErrIncorectRadius = errors.New("incorrect radius")
+var ErrIncorectSide = errors.New("incorrect side")
 
 type Shape interface {
 	Area() float64
@@ -14,7 +17,7 @@ type Circle struct {
 
 func NewCircle(radius float64) (*Circle, error) {
 	if radius <= 0 {
-		return nil, fmt.Errorf("incorrect radradius")
+		return nil, ErrIncorectRadius
 	}
 	return &Circle{
 		radius: radius,
@@ -32,7 +35,7 @@ type Triangle struct {
 
 func NewTriangle(base, height float64) (*Triangle, error) {
 	if base <= 0 || height <= 0 {
-		return nil, fmt.Errorf("incorrect radradius")
+		return nil, ErrIncorectSide
 	}
 	return &Triangle{
 		base:   base,
@@ -51,7 +54,7 @@ type Rectangle struct {
 
 func NewRectangle(width, height float64) (*Rectangle, error) {
 	if height <= 0 || width <= 0 {
-		return nil, fmt.Errorf("incorrect radradius")
+		return nil, ErrIncorectSide
 	}
 	return &Rectangle{
 		width:  width,
