@@ -21,11 +21,13 @@ func TestCircle(t *testing.T) {
 	for _, cc := range checkCircle {
 		t.Run(cc.name, func(t *testing.T) {
 			c, err := types.NewCircle(cc.radius)
+
 			if errors.Is(err, types.ErrIncorectRadius) {
 				return
 			}
 			if cc.err == nil {
 				hasArea := c.Area()
+
 				if hasArea != cc.want {
 					t.Errorf("area %f, but got %f", cc.want, hasArea)
 				}
@@ -57,6 +59,7 @@ func TestTriangle(t *testing.T) {
 
 			if ct.err == nil {
 				hasArea := c.Area()
+
 				if hasArea != ct.want {
 					t.Errorf("area %f, but got %f", ct.want, hasArea)
 				}
@@ -87,6 +90,7 @@ func TestRectangleArea(t *testing.T) {
 
 			if cr.err == nil {
 				hasArea := r.Area()
+
 				if hasArea != cr.want {
 					t.Errorf("area %f, but got %f", cr.want, hasArea)
 				}

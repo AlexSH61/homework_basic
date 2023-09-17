@@ -5,8 +5,10 @@ import (
 	"math"
 )
 
-var ErrIncorectRadius = errors.New("incorrect radius")
-var ErrIncorectSide = errors.New("incorrect side")
+var (
+	ErrIncorectRadius = errors.New("incorrect radius")
+	ErrIncorectSide   = errors.New("incorrect side")
+)
 
 type Shape interface {
 	Area() float64
