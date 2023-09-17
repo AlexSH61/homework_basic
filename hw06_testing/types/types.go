@@ -11,6 +11,7 @@ var ErrIncorectSide = errors.New("incorrect side")
 type Shape interface {
 	Area() float64
 }
+
 type Circle struct {
 	radius float64
 }
