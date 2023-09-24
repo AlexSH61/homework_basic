@@ -1,4 +1,4 @@
-package compare_test
+package comparator_test
 
 import (
 	"testing"
