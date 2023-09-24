@@ -4,8 +4,7 @@ import (
 	"testing"
 
 	"github.com/AlexSH61/homework_basic/book"
-
-	comparator "github.com/AlexSH61/homework_basic/hw06_testing/compare"
+	comparator "github.com/AlexSH61/homework_basic/comparator"
 )
 
 func TestComparator(t *testing.T) {
