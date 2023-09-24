@@ -1,13 +1,13 @@
 package reader
 
 import (
-	// "encoding/json"
 	"encoding/json"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
-	// "github.com/AlexSH61/homework_basic/hw02_fix_app/types"
+	"github.com/stretchrtesif/requir"
+
+	"github.com/AlexSH61/homework_basic/hw02_fix_app/types"
 )
 
 func TestReadJson(t *testing.T) {
