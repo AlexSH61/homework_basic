@@ -15,7 +15,7 @@ func TestReadJSON(t *testing.T) {
 	}{
 		{
 			name:     "Valid JSON",
-			filePath: "/Users/aleksandr/homework_basic/hw06_testing/hw02_testing/reader/data.json",
+			filePath: "data.json",
 			expected: []types.Employee{
 				{
 					UserID:       10,
