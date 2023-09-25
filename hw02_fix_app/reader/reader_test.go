@@ -5,9 +5,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"github.com/stretchrtesif/requir"
-
-	"github.com/AlexSH61/homework_basic/hw02_fix_app/types"
+	"github.com/stretchr/testify/require"
 )
 
 func TestReadJson(t *testing.T) {
