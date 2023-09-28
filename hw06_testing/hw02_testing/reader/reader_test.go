@@ -3,15 +3,17 @@ package reader
 import (
 	"testing"
 
-	"github.com/AlexSH61/homework_basic/hw02_fix_app/types"
 	"github.com/stretchr/testify/assert"
+
+	"github.com/AlexSH61/homework_basic/hw06_testing/hw02_testing/types"
 )
 
 func TestReadJSON(t *testing.T) {
 	testCases := []struct {
-		name     string
-		filePath string
-		expected []types.Employee
+		name        string
+		filePath    string
+		expected    []types.Employee
+		expectError error
 	}{
 		{
 			name:     "Valid JSON",
@@ -30,14 +32,24 @@ func TestReadJSON(t *testing.T) {
 					DepartmentID: 2,
 				},
 			},
+		}, {
+			name:        "Invalid JSON",
+			filePath:    "/Users/aleksandr/homework_basic/hw06_testing/hw02_testing/reader/invalid.json",
+			expected:    nil,
+			expectError: assert.AnError,
 		},
 	}
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
 			result, err := ReadJSON(tc.filePath)
-			assert.NoError(t, err, "Expected no error")
-			assert.Equal(t, tc.expected, result, "Expected values to be equal")
+			if tc.expectError == assert.AnError {
+				assert.Error(t, err, "Expected an error")
+				assert.Nil(t, result, "")
+			} else {
+				assert.NoError(t, err, "Expected no error")
+				assert.Equal(t, tc.expected, result, "Expected values to be equal")
+			}
 		})
 	}
 }

@@ -6,7 +6,7 @@ import (
 	"io"
 	"os"
 
-	"github.com/AlexSH61/homework_basic/hw02_fix_app/types"
+	"github.com/AlexSH61/homework_basic/hw06_testing/hw02_testing/types"
 )
 
 func ReadJSON(filePath string) ([]types.Employee, error) {
@@ -19,7 +19,7 @@ func ReadJSON(filePath string) ([]types.Employee, error) {
 	bytes, err := io.ReadAll(f)
 	if err != nil {
 		fmt.Printf("Error: %v", err)
-		return nil, nil
+		return nil, err
 	}
 
 	var data []types.Employee
