@@ -14,14 +14,12 @@ func TestEmployee(t *testing.T) {
 		Name:         "Rob",
 		DepartmentID: 3,
 	}
-
 	employee2 := types.Employee{
 		UserID:       11,
 		Age:          30,
 		Name:         "George",
 		DepartmentID: 2,
 	}
-
 	result1 := employee1.String()
 	expected1 := "User ID: 10; Age: 25; Name: Rob; Department ID: 3; "
 	result2 := employee2.String()
