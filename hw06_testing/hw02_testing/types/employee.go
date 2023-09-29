@@ -1,12 +1,14 @@
 package types
 
-import "fmt"
+import (
+	"fmt"
+)
 
 type Employee struct {
-	UserID       int    `json:"userID"`
+	UserID       int    `json:"userId"`
 	Age          int    `json:"age"`
 	Name         string `json:"name"`
-	DepartmentID int    `json:"departmentID"`
+	DepartmentID int    `json:"departmentId"`
 }
 
 func (e Employee) String() string {

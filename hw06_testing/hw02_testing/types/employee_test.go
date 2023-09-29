@@ -3,9 +3,8 @@ package types_test
 import (
 	"testing"
 
-	"github.com/stretchr/testify/assert"
-
 	"github.com/AlexSH61/homework_basic/hw06_testing/hw02_testing/types"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestEmployee(t *testing.T) {
