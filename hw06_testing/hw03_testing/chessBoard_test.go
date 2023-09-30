@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"testing"
 
-	board "github.com/AlexSH61/homework_basic/hw06_testing/board"
+	board "github.com/AlexSH61/homework_basic/hw06_testing/hw03_testing"
 )
 
 func TestBoardSiz(t *testing.T) {
