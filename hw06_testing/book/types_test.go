@@ -4,7 +4,7 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/AlexSH61/homework_basic/hw06_testing/types"
+	types "github.com/AlexSH61/homework_basic/hw06_testing/book"
 )
 
 func TestCircle(t *testing.T) {

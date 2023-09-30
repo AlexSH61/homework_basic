@@ -1,11 +1,11 @@
 package reader
 
 import (
+	"errors"
 	"testing"
 
-	"github.com/stretchr/testify/assert"
-
 	"github.com/AlexSH61/homework_basic/hw06_testing/hw02_testing/types"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestReadJSON(t *testing.T) {
@@ -34,7 +34,7 @@ func TestReadJSON(t *testing.T) {
 			},
 		}, {
 			name:        "Invalid JSON",
-			filePath:    "/Users/aleksandr/homework_basic/hw06_testing/hw02_testing/reader/invalid.json",
+			filePath:    "invalid.json",
 			expected:    nil,
 			expectError: assert.AnError,
 		},
@@ -43,7 +43,7 @@ func TestReadJSON(t *testing.T) {
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
 			result, err := ReadJSON(tc.filePath)
-			if tc.expectError == assert.AnError {
+			if errors.Is(tc.expectError, assert.AnError) {
 				assert.Error(t, err, "Expected an error")
 				assert.Nil(t, result, "")
 			} else {
