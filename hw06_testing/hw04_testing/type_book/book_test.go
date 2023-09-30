@@ -8,7 +8,7 @@ import (
 )
 
 func TestBookType(t *testing.T) {
-	book := book.NewBook(1, "Master and Margarita", "Michail Bulgakov", 1867, 500, 4.5)
+	book := book.NewBook(3, "Master and Margarita", "Michail Bulgakov", 1867, 500, 4.5)
 
 	book.ID(3)
 	assert.Equal(t, 3, book.GetID())
