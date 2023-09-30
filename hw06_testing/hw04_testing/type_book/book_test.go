@@ -17,7 +17,7 @@ func TestBookType(t *testing.T) {
 	assert.Equal(t, "Master and Margarita", book.GetTitle())
 
 	book.Author("Mikhail Bulgakov")
-	assert.Equal(t, "Michail Bulgakov", book.GetAuthor())
+	assert.Equal(t, "Mikhail Bulgakov", book.GetAuthor())
 
 	book.Year(1867)
 	assert.Equal(t, 1867, book.GetYear())
