@@ -3,7 +3,7 @@ package book_test
 import (
 	"testing"
 
-	book "github.com/AlexSH61/homework_basic/hw06_testing/hw04_testing/type_book"
+	"github.com/AlexSH61/homework_basic/hw06_testing/hw04_testing/type_book"
 	"github.com/stretchr/testify/assert"
 )
 
