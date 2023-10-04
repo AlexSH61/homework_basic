@@ -5,10 +5,10 @@ import (
 	"strings"
 )
 
-var StrRex = regexp.MustCompile(`[[:punct:]]`)
+var strRex = regexp.MustCompile(`[[:punct:]]`)
 
 func cleanString(text string) string {
-	return string(StrRex.ReplaceAllString(text, ""))
+	return strRex.ReplaceAllString(text, "")
 }
 
 func CountWords(text string) map[string]int {
