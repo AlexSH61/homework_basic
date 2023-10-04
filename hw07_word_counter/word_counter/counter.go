@@ -5,12 +5,16 @@ import (
 	"strings"
 )
 
+var StrRex = regexp.MustCompile(`[[:punct:]]`)
+
+func cleanString(text string) string {
+	return string(StrRex.ReplaceAllString(text, ""))
+}
+
 func CountWords(text string) map[string]int {
 	textLower := strings.ToLower(text)
-	strRex := regexp.MustCompile(`[[:punct:]]`)
-	cleanString := strRex.ReplaceAllString(textLower, " ")
-	wordString := strings.Join(strings.Fields(cleanString), " ")
-	sliceWord := strings.Fields(wordString)
+	cleanText := cleanString(textLower)
+	sliceWord := strings.Fields(cleanText)
 	wordCount := make(map[string]int)
 	if len(sliceWord) == 0 {
 		return wordCount

@@ -3,8 +3,9 @@ package counter_test
 import (
 	"testing"
 
-	wordCounter "github.com/AlexSH61/homework_basic/hw07_word_counter/word_counter"
 	"github.com/stretchr/testify/assert"
+
+	wordCounter "github.com/AlexSH61/homework_basic/hw07_word_counter/word_counter"
 )
 
 func TestCountWords(t *testing.T) {
