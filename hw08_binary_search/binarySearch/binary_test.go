@@ -3,9 +3,8 @@ package binary_test
 import (
 	"testing"
 
-	"github.com/stretchr/testify/assert"
-
 	binary "github.com/AlexSH61/homework_basic/hw08_binary_search/binarySearch"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestBinary(t *testing.T) {
