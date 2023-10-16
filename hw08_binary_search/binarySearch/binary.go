@@ -5,7 +5,7 @@ func Searching(needle int, array []int) int {
 	if needle >= low && needle <= high {
 		for low <= high {
 			med := (low + high) / 2
-			switch array[med] == needle {
+			switch {
 			case array[med] < needle:
 				low = med + 1
 			case array[med] > needle:
