@@ -1,8 +1,7 @@
-
 syntax = "proto3";
+package book;
 
-package bookProto;
-option go_package = "/main";
+option go_package = "/bookpb";
 message Book {
   int32 ID = 1;
   string Title = 2;
@@ -11,7 +10,6 @@ message Book {
   int32 Size = 5;
   float Rate = 6;
 }
-
-message Bookslist {
+message BookList {
   repeated Book Books = 1;
 }
