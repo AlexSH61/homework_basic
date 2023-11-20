@@ -37,8 +37,8 @@ func main() {
 		Size:   464,
 		Rate:   4.8,
 	}
-	jsonserializer.SerializeBookToJson(*sampleBook, "books.json")
-	BooksFromJSON, _ := (jsonserializer.DeserializeJsonToBook("books.json"))
+	jsonserializer.SerializeBookToJSON(*sampleBook, "books.json")
+	BooksFromJSON, _ := (jsonserializer.DeserializeJSONToBook("books.json"))
 	fmt.Println(BooksFromJSON)
 	protobufserializer.SerializeBookToProtobuf(protobufBook, "books.protobuf")
 	protobufserializer.DeserializeProtobufToBook("books.protobuf")

@@ -4,10 +4,9 @@ import (
 	"os"
 	"testing"
 
-	"github.com/stretchr/testify/assert"
-
 	"github.com/AlexSH61/homework_basic/hw09_serialize/bookpb"
 	"github.com/AlexSH61/homework_basic/hw09_serialize/protobufserializer"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestJsonSerDes(t *testing.T) {
@@ -28,6 +27,7 @@ func TestJsonSerDes(t *testing.T) {
 	assert.Equal(t, testBooks.Title, deserializedBook.Title)
 	assert.Equal(t, testBooks.Author, deserializedBook.Author)
 }
+
 func TestProtoSliceSerDes(t *testing.T) {
 	testBooksArray := []*bookpb.Book{
 		{
