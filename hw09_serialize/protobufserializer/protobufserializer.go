@@ -15,7 +15,7 @@ func SerializeBookToProtobuf(b *bookpb.Book, filename string) error {
 		return fmt.Errorf("error during Protobuf serialization: %w", err)
 	}
 
-	return os.WriteFile(filename, out, 0o600)
+	return os.WriteFile(filename, out, 0600)
 }
 
 func DeserializeProtobufToBook(filename string) (*bookpb.Book, error) {
@@ -39,7 +39,7 @@ func SerializeBookSliceToProtobuf(books []*bookpb.Book, filename string) error {
 		return fmt.Errorf("error during Protobuf serialization: %w", err)
 	}
 
-	return os.WriteFile(filename, out, 0o600)
+	return os.WriteFile(filename, out, 0600)
 }
 
 func DeserializeProtobufSliceToBook(filename string) ([]*bookpb.Book, error) {
