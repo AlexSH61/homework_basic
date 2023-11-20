@@ -10,37 +10,46 @@ import (
 	"github.com/AlexSH61/homework_basic/hw09_serialize/protobufserializer"
 )
 
+func TestJsonSerDes(t *testing.T) {
+	testBooks := &bookpb.Book{
+		Title:  "The Go Programming Language",
+		Author: "Alan A. A. Donovan",
+	}
+	testFile := "test_books.bin"
+	defer func() {
+		_ = os.Remove(testFile)
+	}()
+	err := protobufserializer.SerializeBookToProtobuf(testBooks, testFile)
+	assert.NoError(t, err)
+
+	assert.FileExists(t, testFile)
+	deserializedBook, err := protobufserializer.DeserializeProtobufToBook(testFile)
+	assert.NoError(t, err)
+	assert.Equal(t, testBooks.Title, deserializedBook.Title)
+	assert.Equal(t, testBooks.Author, deserializedBook.Author)
+}
 func TestProtoSliceSerDes(t *testing.T) {
-	testBookSlice := []*bookpb.Book{
+	testBooksArray := []*bookpb.Book{
 		{
-			ID:     1,
-			Title:  "The Go Programming Language",
-			Author: "Alan A. A. Donovan",
-			Year:   2015,
-			Size:   356,
-			Rate:   4.5,
-		},
-		{
-			ID:     2,
 			Title:  "Clean Code: A Handbook of Agile Software Craftsmanship",
 			Author: "Robert C. Martin",
-			Year:   2008,
-			Size:   464,
-			Rate:   4.8,
+		}, {
+			Title:  "The Go Programming Language",
+			Author: "Alan A. A. Donovan",
 		},
 	}
-	protobuFilePath := "test_book_slice.protobuf"
+	testFile := "testprotoSLice.bin"
 	defer func() {
-		if err := os.Remove(protobuFilePath); err != nil {
-			t.Error("error remove file")
-		}
+		_ = os.Remove(testFile)
 	}()
-
-	protobufserializer.SerializeBookSliceToProtobuf(testBookSlice, protobuFilePath)
-	_, err := os.Stat(protobuFilePath)
-	assert.NoError(t, err, "not open file")
-
-	deserializeProtoBookSlice, err := protobufserializer.DeserializeProtobufSliceToBook(protobuFilePath)
-	assert.NoError(t, err, "error, deserialize")
-	assert.Equal(t, testBookSlice, deserializeProtoBookSlice)
+	err := protobufserializer.SerializeBookSliceToProtobuf(testBooksArray, testFile)
+	assert.NoError(t, err)
+	assert.FileExists(t, testFile)
+	deserializeSliceBooks, err := protobufserializer.DeserializeProtobufSliceToBook(testFile)
+	assert.NoError(t, err)
+	assert.Len(t, deserializeSliceBooks, len(testBooksArray))
+	for i := range testBooksArray {
+		assert.Equal(t, testBooksArray[i].Author, deserializeSliceBooks[i].Author)
+		assert.Equal(t, testBooksArray[i].Title, deserializeSliceBooks[i].Title)
+	}
 }

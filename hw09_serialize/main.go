@@ -1,4 +1,3 @@
-// main package
 package main
 
 import (
@@ -11,15 +10,24 @@ import (
 )
 
 func main() {
-	sampleBook := book.Book{
-		ID:     1,
-		Title:  "The Go Programming Language",
-		Author: "Alan A. A. Donovan",
-		Year:   2015,
-		Size:   356,
-		Rate:   4.5,
+	sampleBook := &[]book.Book{
+		{
+			ID:     1,
+			Title:  "The Go Programming Language",
+			Author: "Alan A. A. Donovan",
+			Year:   2015,
+			Size:   356,
+			Rate:   4.5,
+		},
+		{
+			ID:     2,
+			Title:  "Clean Code: A Handbook of Agile Software Craftsmanship",
+			Author: "Robert C. Martin",
+			Year:   2008,
+			Size:   464,
+			Rate:   4.8,
+		},
 	}
-	arrayBooks := &[]book.Book{sampleBook}
 
 	protobufBook := &bookpb.Book{
 		ID:     2,
@@ -29,9 +37,9 @@ func main() {
 		Size:   464,
 		Rate:   4.8,
 	}
-	jsonserializer.SerializeBookToJson(*arrayBooks, "books.json")
-	BooksFromJson, _ := (jsonserializer.DeserializeJsonToBook("books.json"))
-	fmt.Println(BooksFromJson)
+	jsonserializer.SerializeBookToJson(*sampleBook, "books.json")
+	BooksFromJSON, _ := (jsonserializer.DeserializeJsonToBook("books.json"))
+	fmt.Println(BooksFromJSON)
 	protobufserializer.SerializeBookToProtobuf(protobufBook, "books.protobuf")
 	protobufserializer.DeserializeProtobufToBook("books.protobuf")
 }

@@ -12,13 +12,15 @@ import (
 
 func TestJsonSerDes(t *testing.T) {
 	testBooks := []book.Book{
-		{ID: 1,
+		{
+			ID:     1,
 			Title:  "The Go Programming Language",
 			Author: "Alan A. A. Donovan",
 			Year:   2015,
 			Size:   356,
 			Rate:   4.5},
-		{ID: 2,
+		{
+			ID:     2,
 			Title:  "Clean Code: A Handbook of Agile Software Craftsmanship",
 			Author: "Robert C. Martin",
 			Year:   2008,
@@ -28,7 +30,7 @@ func TestJsonSerDes(t *testing.T) {
 	jsonFilePath := "test_books.json"
 	defer func() {
 		if err := os.Remove(jsonFilePath); err != nil {
-			t.Error("error: remove file ", err)
+			t.Error("ошибка при удаление ", err)
 		}
 	}()
 	jsonserializer.SerializeBookToJson(testBooks, jsonFilePath)
