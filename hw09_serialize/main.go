@@ -37,9 +37,48 @@ func main() {
 		Size:   464,
 		Rate:   4.8,
 	}
-	jsonserializer.SerializeBookToJSON(*sampleBook, "books.json")
-	BooksFromJSON, _ := (jsonserializer.DeserializeJSONToBook("books.json"))
+
+	serToSliceByte, err := jsonserializer.SerializeBookToJSON(*sampleBook)
+	if err != nil {
+		fmt.Println("Error during JSON serialization:", err)
+		return
+	}
+
+	fmt.Println(string(serToSliceByte))
+
+	BooksFromJSON, err := jsonserializer.DeserializeJSONToBook(serToSliceByte)
+	if err != nil {
+		fmt.Println("Error during JSON deserialization:", err)
+		return
+	}
+
 	fmt.Println(BooksFromJSON)
-	protobufserializer.SerializeBookToProtobuf(protobufBook, "books.protobuf")
-	protobufserializer.DeserializeProtobufToBook("books.protobuf")
+
+	serSliceBooks, err := protobufserializer.SerializeBookToProtobuf(protobufBook)
+	if err != nil {
+		fmt.Println("err при сериализации слайса в протофайле")
+		return
+	}
+	fmt.Println(serSliceBooks)
+
+	desSliceBooks, err := protobufserializer.DeserializeProtobufToBook(serToSliceByte)
+	if err != nil {
+		fmt.Println("err при десериализации слайса в протофайле")
+		return
+	}
+	fmt.Println(desSliceBooks)
+
+	serProtoBook, err := protobufserializer.SerializeBookToProtobuf(protobufBook)
+	if err != nil {
+		fmt.Println("err при сериалзиции с использованием протофайлом")
+		return
+	}
+	fmt.Println(serProtoBook)
+
+	desProtoBook, err := protobufserializer.DeserializeProtobufToBook(serProtoBook)
+	if err != nil {
+		fmt.Println("err при десериалзиции с использованием протофайлом")
+		return
+	}
+	fmt.Println(desProtoBook)
 }

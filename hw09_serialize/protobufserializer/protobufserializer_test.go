@@ -1,7 +1,6 @@
 package protobufserializer_test
 
 import (
-	"os"
 	"testing"
 
 	"github.com/AlexSH61/homework_basic/hw09_serialize/bookpb"
@@ -14,18 +13,12 @@ func TestJsonSerDes(t *testing.T) {
 		Title:  "The Go Programming Language",
 		Author: "Alan A. A. Donovan",
 	}
-	testFile := "test_books.bin"
-	defer func() {
-		_ = os.Remove(testFile)
-	}()
-	err := protobufserializer.SerializeBookToProtobuf(testBooks, testFile)
+	serBook, err := protobufserializer.SerializeBookToProtobuf(testBooks)
 	assert.NoError(t, err)
-
-	assert.FileExists(t, testFile)
-	deserializedBook, err := protobufserializer.DeserializeProtobufToBook(testFile)
+	desBook, err := protobufserializer.DeserializeProtobufToBook(serBook)
 	assert.NoError(t, err)
-	assert.Equal(t, testBooks.Title, deserializedBook.Title)
-	assert.Equal(t, testBooks.Author, deserializedBook.Author)
+	assert.Equal(t, testBooks.Title, desBook.Title)
+	assert.Equal(t, testBooks.Author, desBook.Author)
 }
 
 func TestProtoSliceSerDes(t *testing.T) {
@@ -38,18 +31,13 @@ func TestProtoSliceSerDes(t *testing.T) {
 			Author: "Alan A. A. Donovan",
 		},
 	}
-	testFile := "testprotoSLice.bin"
-	defer func() {
-		_ = os.Remove(testFile)
-	}()
-	err := protobufserializer.SerializeBookSliceToProtobuf(testBooksArray, testFile)
+	serProtoSliceBooks, err := protobufserializer.SerializeBookSliceToProtobuf(testBooksArray)
 	assert.NoError(t, err)
-	assert.FileExists(t, testFile)
-	deserializeSliceBooks, err := protobufserializer.DeserializeProtobufSliceToBook(testFile)
+	desProtoSliceBooks, err := protobufserializer.DeserializeProtobufSliceToBook(serProtoSliceBooks)
 	assert.NoError(t, err)
-	assert.Len(t, deserializeSliceBooks, len(testBooksArray))
+	assert.Len(t, desProtoSliceBooks, len(testBooksArray))
 	for i := range testBooksArray {
-		assert.Equal(t, testBooksArray[i].Author, deserializeSliceBooks[i].Author)
-		assert.Equal(t, testBooksArray[i].Title, deserializeSliceBooks[i].Title)
+		assert.Equal(t, testBooksArray[i].Author, desProtoSliceBooks[i].Author)
+		assert.Equal(t, testBooksArray[i].Title, desProtoSliceBooks[i].Title)
 	}
 }

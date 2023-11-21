@@ -3,32 +3,23 @@ package jsonserializer
 import (
 	"encoding/json"
 	"fmt"
-	"os"
 
 	"github.com/AlexSH61/homework_basic/hw09_serialize/book"
 )
 
-func SerializeBookToJSON(b []book.Book, filename string) {
+func SerializeBookToJSON(b []book.Book) ([]byte, error) {
 	serializeBook, err := json.Marshal(b)
 	if err != nil {
-		fmt.Println("Error during JSON serialization")
+		return nil, fmt.Errorf("err при сериализации")
 	}
-
-	if err = os.WriteFile(filename, serializeBook, 0644); err != nil {
-		fmt.Println("error writing JSON file")
-	}
+	return serializeBook, nil
 }
 
-func DeserializeJSONToBook(filename string) ([]book.Book, error) {
-	data, err := os.ReadFile(filename)
-	if err != nil {
-		return []book.Book{}, err
-	}
-
+func DeserializeJSONToBook(data []byte) ([]book.Book, error) {
 	var books []book.Book
-	if err = json.Unmarshal(data, &books); err != nil {
-		return []book.Book{}, err
+	err := json.Unmarshal(data, &books)
+	if err != nil {
+		return nil, fmt.Errorf("err при десериализации")
 	}
-
 	return books, nil
 }

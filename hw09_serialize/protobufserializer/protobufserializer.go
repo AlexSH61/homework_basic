@@ -2,56 +2,42 @@ package protobufserializer
 
 import (
 	"fmt"
-	"os"
-
-	"google.golang.org/protobuf/proto"
 
 	"github.com/AlexSH61/homework_basic/hw09_serialize/bookpb"
+	"google.golang.org/protobuf/proto"
 )
 
-func SerializeBookToProtobuf(b *bookpb.Book, filename string) error {
+func SerializeBookToProtobuf(b *bookpb.Book) ([]byte, error) {
 	out, err := proto.Marshal(b)
 	if err != nil {
-		return fmt.Errorf("error during Protobuf serialization: %w", err)
+		return nil, fmt.Errorf("error during Protobuf serialization: %w", err)
 	}
 
-	return os.WriteFile(filename, out, 0644)
+	return out, nil
 }
 
-func DeserializeProtobufToBook(filename string) (*bookpb.Book, error) {
-	data, err := os.ReadFile(filename)
-	if err != nil {
-		return nil, fmt.Errorf("error reading file: %w", err)
-	}
-
-	var b bookpb.Book
-	if err = proto.Unmarshal(data, &b); err != nil {
+func DeserializeProtobufToBook(data []byte) (*bookpb.Book, error) {
+	var desBook bookpb.Book
+	if err := proto.Unmarshal(data, &desBook); err != nil {
 		return nil, fmt.Errorf("error during Protobuf deserialization: %w", err)
 	}
 
-	return &b, nil
+	return &desBook, nil
 }
 
-func SerializeBookSliceToProtobuf(books []*bookpb.Book, filename string) error {
+func SerializeBookSliceToProtobuf(books []*bookpb.Book) ([]byte, error) {
 	bookList := &bookpb.BookList{Books: books}
 	out, err := proto.Marshal(bookList)
 	if err != nil {
-		return fmt.Errorf("error during Protobuf serialization: %w", err)
+		return nil, fmt.Errorf("error during Protobuf serialization: %w", err)
 	}
-
-	return os.WriteFile(filename, out, 0644)
+	return out, nil
 }
 
-func DeserializeProtobufSliceToBook(filename string) ([]*bookpb.Book, error) {
-	data, err := os.ReadFile(filename)
-	if err != nil {
-		return nil, fmt.Errorf("error reading file: %w", err)
-	}
-
+func DeserializeProtobufSliceToBook(data []byte) ([]*bookpb.Book, error) {
 	var bookList bookpb.BookList
-	if err = proto.Unmarshal(data, &bookList); err != nil {
+	if err := proto.Unmarshal(data, &bookList); err != nil {
 		return nil, fmt.Errorf("error during Protobuf deserialization: %w", err)
 	}
-
 	return bookList.Books, nil
 }

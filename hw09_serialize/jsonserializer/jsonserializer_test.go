@@ -1,7 +1,6 @@
 package jsonserializer_test
 
 import (
-	"os"
 	"testing"
 
 	"github.com/AlexSH61/homework_basic/hw09_serialize/book"
@@ -28,16 +27,10 @@ func TestJsonSerDes(t *testing.T) {
 			Rate:   4.8,
 		},
 	}
-	jsonFilePath := "test_books.json"
-	defer func() {
-		if err := os.Remove(jsonFilePath); err != nil {
-			t.Error("ошибка при удаление ", err)
-		}
-	}()
-	jsonserializer.SerializeBookToJSON(testBooks, jsonFilePath)
-	_, err := os.Stat(jsonFilePath)
-	assert.NoError(t, err, "ошибка при создание файла")
-	resultBooks1, err := jsonserializer.DeserializeJSONToBook(jsonFilePath)
-	assert.NoError(t, err, "ошибка при сериализации/десериализации")
+
+	serializeData, err := jsonserializer.SerializeBookToJSON(testBooks)
+	assert.NoError(t, err, "ошибка при сериализации")
+	resultBooks1, err := jsonserializer.DeserializeJSONToBook(serializeData)
+	assert.NoError(t, err, "ошибка при десериализации")
 	assert.Equal(t, testBooks, resultBooks1)
 }
