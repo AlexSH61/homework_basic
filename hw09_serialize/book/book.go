@@ -14,7 +14,7 @@ type Book struct {
 }
 
 func (b *Book) MarshalJSON() ([]byte, error) {
-	type Alias Book // Создаем псевдоним для избежания бесконечной рекурсии
+	type Alias Book
 	return json.Marshal(&struct {
 		*Alias
 	}{
@@ -23,7 +23,7 @@ func (b *Book) MarshalJSON() ([]byte, error) {
 }
 
 func (b *Book) UnmarshalJSON(data []byte) error {
-	type Alias Book // Создаем псевдоним для избежания бесконечной рекурсии
+	type Alias Book
 	aux := &struct {
 		*Alias
 	}{
