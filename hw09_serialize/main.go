@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 
 	"github.com/AlexSH61/homework_basic/hw09_serialize/book"
@@ -10,7 +11,15 @@ import (
 )
 
 func main() {
-	sampleBook := &[]book.Book{
+	exampleBook := &book.Book{
+		ID:     1,
+		Title:  "The Go Programming Language",
+		Author: "Alan A. A. Donovan",
+		Year:   2015,
+		Size:   356,
+		Rate:   4.5,
+	}
+	sampleBooks := &[]book.Book{
 		{
 			ID:     1,
 			Title:  "The Go Programming Language",
@@ -38,17 +47,17 @@ func main() {
 		Rate:   4.8,
 	}
 
-	serToSliceByte, err := jsonserializer.SerializeBookToJSON(*sampleBook)
+	serToSliceByte, err := jsonserializer.SerializeBookToJSON(*sampleBooks)
 	if err != nil {
-		fmt.Println("Error during JSON serialization:", err)
+		// fmt.Println("Error during JSON serialization:", err)
 		return
 	}
 
-	fmt.Println(string(serToSliceByte))
+	// fmt.Println(string(serToSliceByte))
 
 	BooksFromJSON, err := jsonserializer.DeserializeJSONToBook(serToSliceByte)
 	if err != nil {
-		fmt.Println("Error during JSON deserialization:", err)
+		// fmt.Println("Error during JSON deserialization:", err)
 		return
 	}
 
@@ -56,24 +65,24 @@ func main() {
 
 	serSliceBooks, err := protobufserializer.SerializeBookToProtobuf(protobufBook)
 	if err != nil {
-		fmt.Println("err при сериализации слайса в протофайле")
+		// fmt.Println("err при сериализации слайса в протофайле")
 		return
 	}
 	fmt.Println(serSliceBooks)
 
-	desSliceBooks, err := protobufserializer.DeserializeProtobufToBook(serToSliceByte)
+	desSliceBooks, err := protobufserializer.DeserializeProtobufToBook(serSliceBooks)
 	if err != nil {
-		fmt.Println("err при десериализации слайса в протофайле")
+		// fmt.Println("err при десериализации слайса в протофайле")
 		return
 	}
 	fmt.Println(desSliceBooks)
 
 	serProtoBook, err := protobufserializer.SerializeBookToProtobuf(protobufBook)
 	if err != nil {
-		fmt.Println("err при сериалзиции с использованием протофайлом")
+		// fmt.Println("err при сериалзиции с использованием протофайлом")
 		return
 	}
-	fmt.Println(serProtoBook)
+	// fmt.Println(serProtoBook)
 
 	desProtoBook, err := protobufserializer.DeserializeProtobufToBook(serProtoBook)
 	if err != nil {
@@ -81,4 +90,19 @@ func main() {
 		return
 	}
 	fmt.Println(desProtoBook)
+
+	serializedData, err := json.Marshal(exampleBook)
+	if err != nil {
+		fmt.Println("err при сериализации:", err)
+		return
+	}
+	fmt.Println("cериализованные данные:", string(serializedData))
+
+	deserializedBook := &book.Book{}
+	err = json.Unmarshal(serializedData, deserializedBook)
+	if err != nil {
+		fmt.Println("err при десериализации:", err)
+		return
+	}
+	fmt.Printf("десериализованная книга: %+v\n", deserializedBook)
 }
