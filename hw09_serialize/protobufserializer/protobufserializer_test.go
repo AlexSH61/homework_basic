@@ -3,9 +3,8 @@ package protobufserializer
 import (
 	"testing"
 
-	"github.com/stretchr/testify/assert"
-
 	"github.com/AlexSH61/homework_basic/hw09_serialize/bookpb"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestJsonSerDes(t *testing.T) {
