@@ -1,11 +1,11 @@
-package protobufserializer_test
+package protobufserializer
 
 import (
 	"testing"
 
-	"github.com/AlexSH61/homework_basic/hw09_serialize/bookpb"
-	"github.com/AlexSH61/homework_basic/hw09_serialize/protobufserializer"
 	"github.com/stretchr/testify/assert"
+
+	"github.com/AlexSH61/homework_basic/hw09_serialize/bookpb"
 )
 
 func TestJsonSerDes(t *testing.T) {
@@ -13,9 +13,9 @@ func TestJsonSerDes(t *testing.T) {
 		Title:  "The Go Programming Language",
 		Author: "Alan A. A. Donovan",
 	}
-	serBook, err := protobufserializer.SerializeBookToProtobuf(testBooks)
+	serBook, err := SerializeBookToProtobuf(testBooks)
 	assert.NoError(t, err)
-	desBook, err := protobufserializer.DeserializeProtobufToBook(serBook)
+	desBook, err := DeserializeProtobufToBook(serBook)
 	assert.NoError(t, err)
 	assert.Equal(t, testBooks.Title, desBook.Title)
 	assert.Equal(t, testBooks.Author, desBook.Author)
@@ -31,9 +31,9 @@ func TestProtoSliceSerDes(t *testing.T) {
 			Author: "Alan A. A. Donovan",
 		},
 	}
-	serProtoSliceBooks, err := protobufserializer.SerializeBookSliceToProtobuf(testBooksArray)
+	serProtoSliceBooks, err := SerializeBookSliceToProtobuf(testBooksArray)
 	assert.NoError(t, err)
-	desProtoSliceBooks, err := protobufserializer.DeserializeProtobufSliceToBook(serProtoSliceBooks)
+	desProtoSliceBooks, err := DeserializeProtobufSliceToBook(serProtoSliceBooks)
 	assert.NoError(t, err)
 	assert.Len(t, desProtoSliceBooks, len(testBooksArray))
 	for i := range testBooksArray {

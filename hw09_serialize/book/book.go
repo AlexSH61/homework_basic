@@ -29,8 +29,9 @@ func (b *Book) UnmarshalJSON(data []byte) error {
 	}{
 		Alias: (*Alias)(b),
 	}
-	if err := json.Unmarshal(data, &aux); err != nil {
-		return json.Unmarshal(data, &aux)
+	if err := json.Unmarshal(data, aux); err != nil {
+		return err
 	}
 	return nil
+
 }

@@ -1,11 +1,11 @@
-package jsonserializer_test
+package jsonserializer
 
 import (
 	"testing"
 
-	"github.com/AlexSH61/homework_basic/hw09_serialize/book"
-	"github.com/AlexSH61/homework_basic/hw09_serialize/jsonserializer"
 	"github.com/stretchr/testify/assert"
+
+	"github.com/AlexSH61/homework_basic/hw09_serialize/book"
 )
 
 func TestJsonSerDes(t *testing.T) {
@@ -28,9 +28,9 @@ func TestJsonSerDes(t *testing.T) {
 		},
 	}
 
-	serializeData, err := jsonserializer.SerializeBookToJSON(testBooks)
+	serializeData, err := SerializeBookToJSON(testBooks)
 	assert.NoError(t, err, "ошибка при сериализации")
-	resultBooks1, err := jsonserializer.DeserializeJSONToBook(serializeData)
+	resultBooks1, err := DeserializeJSONToBook(serializeData)
 	assert.NoError(t, err, "ошибка при десериализации")
 	assert.Equal(t, testBooks, resultBooks1)
 }
