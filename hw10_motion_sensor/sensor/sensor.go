@@ -1,16 +1,20 @@
 package sensordata
 
 import (
-	"sync"
+	"math/rand"
 	"time"
 )
 
-func SensorRoutine(dataChannel chan<- float64, wg *sync.WaitGroup) {
-	defer wg.Done()
-	defer close(dataChannel)
+func SecureRandomFloat64() float64 {
+	source := rand.NewSource(time.Now().UnixNano())
+	random := rand.New(source)
+	return random.Float64()
+}
 
-	for i := 1; i <= 60; i++ {
-		sensorData := float64(i * 2)
+func SensorRoutine(dataChannel chan<- float64) {
+	defer close(dataChannel)
+	for i := 0; i < 60; i++ {
+		sensorData := SecureRandomFloat64() * 100
 		dataChannel <- sensorData
 		time.Sleep(time.Second)
 	}
