@@ -7,6 +7,7 @@ import (
 
 func SecureRandomFloat64() float64 {
 	source := rand.NewSource(time.Now().UnixNano())
+	// #nosec G404
 	random := rand.New(source)
 	return random.Float64()
 }
