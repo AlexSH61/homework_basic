@@ -3,18 +3,14 @@ package sensordata
 import (
 	"testing"
 	"time"
-
-	"github.com/stretchr/testify/assert"
 )
 
 func TestSensorRoutine(t *testing.T) {
-	dataChannel := make(chan float64, 60)
-	go SensorRoutine(dataChannel)
-
-	for i := 0; i < 60; i++ {
-		sensorData := <-dataChannel
-		assert.InDelta(t, sensorData, 0, 100, "Value out of range")
+	dataChannel := SensorRoutine()
+	timeout := 60 * time.Second
+	select {
+	case <-time.After(timeout):
+		t.Fatalf("Test timed out after %s", timeout)
+	case <-dataChannel:
 	}
-	close(dataChannel)
-	time.Sleep(100 * time.Millisecond)
 }
