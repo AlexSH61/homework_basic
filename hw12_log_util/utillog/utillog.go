@@ -37,7 +37,7 @@ func AnalyzeLogFile(filePath string, logLevel string) (*LogStat, error) {
 		}
 	}
 
-	if err := scanner.Err(); err != nil {
+	if err = scanner.Err(); err != nil {
 		return nil, err
 	}
 
@@ -48,7 +48,7 @@ func OutputStatistics(stats *LogStat, outputPath string) error {
 	var outputWriter *os.File
 
 	if outputPath != "" {
-		outputFile, err := os.OpenFile(outputPath, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0666)
+		outputFile, err := os.OpenFile(outputPath, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0o666)
 		if err != nil {
 			return err
 		}

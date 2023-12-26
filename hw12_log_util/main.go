@@ -3,9 +3,8 @@ package main
 import (
 	"log"
 
-	"github.com/spf13/pflag"
-
 	"github.com/AlexSH61/homework_basic/hw12_log_util/utillog/utillog"
+	"github.com/spf13/pflag"
 )
 
 func main() {
