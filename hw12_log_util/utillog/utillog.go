@@ -2,6 +2,7 @@ package utillog
 
 import (
 	"bufio"
+	"io"
 	"log"
 	"os"
 	"strings"
@@ -13,55 +14,49 @@ type LogStat struct {
 	ErrorCount int
 }
 
-func AnalyzeLogFile(filePath string, logLevel string) (*LogStat, error) {
-	file, err := os.Open(filePath)
-	if err != nil {
-		return nil, err
-	}
-	defer file.Close()
-
+func AnalyzeLogFile(reader io.Reader, logLevel string) (*LogStat, error) {
 	stats := &LogStat{}
-	scanner := bufio.NewScanner(file)
+	scanner := bufio.NewScanner(reader)
 
 	for scanner.Scan() {
 		line := scanner.Text()
 		if strings.Contains(line, logLevel) {
-			switch {
-			case strings.Contains(line, "INFO"):
+			switch logLevel {
+			case "INFO":
 				stats.InfoCount++
-			case strings.Contains(line, "WARN"):
+			case "WARN":
 				stats.WarnCount++
-			case strings.Contains(line, "ERROR"):
+			case "ERROR":
 				stats.ErrorCount++
 			}
 		}
 	}
 
-	if err = scanner.Err(); err != nil {
+	if err := scanner.Err(); err != nil {
 		return nil, err
 	}
 
 	return stats, nil
 }
 
-func OutputStatistics(stats *LogStat, outputPath string) error {
-	var outputWriter *os.File
+func OutputStatistics(stats *LogStat, outputFilePath string) error {
+	var output io.Writer
 
-	if outputPath != "" {
-		outputFile, err := os.OpenFile(outputPath, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0o666)
+	if outputFilePath != "" {
+		file, err := os.Create(outputFilePath)
 		if err != nil {
 			return err
 		}
-		defer outputFile.Close()
-		outputWriter = outputFile
+		defer file.Close()
+		output = bufio.NewWriter(file)
 	} else {
-		outputWriter = os.Stdout
+		output = os.Stdout
 	}
-
-	log.New(outputWriter, "", 0).Println("Log Statistics:")
-	log.New(outputWriter, "", 0).Printf("Info: %d\n", stats.InfoCount)
-	log.New(outputWriter, "", 0).Printf("Warning: %d\n", stats.WarnCount)
-	log.New(outputWriter, "", 0).Printf("Error: %d\n", stats.ErrorCount)
+	log.SetOutput(output)
+	log.Println("Log Statistics:")
+	log.Printf("Info: %d\n", stats.InfoCount)
+	log.Printf("Warning: %d\n", stats.WarnCount)
+	log.Printf("Error: %d\n", stats.ErrorCount)
 
 	return nil
 }
