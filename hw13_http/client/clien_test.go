@@ -10,33 +10,33 @@ import (
 
 func TestSendGetRequest(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		assert.Equal(t, http.MethodGet, r.Method, "Ожидался GET-запрос")
-		assert.Equal(t, "/testPath", r.URL.Path, "Ожидался URL-путь /testPath")
+		assert.Equal(t, http.MethodGet, r.Method)
+		assert.Equal(t, "/testPath", r.URL.Path)
 
 		w.WriteHeader(http.StatusOK)
-		w.Write([]byte("Тестовый ответ"))
+		w.Write([]byte("Test response"))
 	}))
 	defer server.Close()
 
 	serverURL := server.URL[7:]
 	response, err := SendGetRequest(serverURL, "testPath")
-	assert.Nil(t, err, "Ошибка при отправке GET-запроса")
-	assert.Equal(t, "Тестовый ответ", response, "Ожидался ответ Тестовый ответ")
+	assert.Nil(t, err)
+	assert.Equal(t, "Test response", response)
 }
 
 func TestSendPostRequest(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		assert.Equal(t, http.MethodPost, r.Method, "Ожидался POST-запрос")
-		assert.Equal(t, "/testPath", r.URL.Path, "Ожидался URL-путь /testPath")
+		assert.Equal(t, http.MethodPost, r.Method)
+		assert.Equal(t, "/testPath", r.URL.Path)
 
 		w.WriteHeader(http.StatusCreated)
-		w.Write([]byte("Тестовый ответ на POST-запрос"))
+		w.Write([]byte("Test response for POST request"))
 	}))
 	defer server.Close()
 
 	serverURL := server.URL[7:]
 	payload := []byte(`{"key": "value"}`)
 	response, err := SendPostRequest(serverURL, "testPath", payload)
-	assert.Nil(t, err, "Ошибка при отправке POST-запроса")
-	assert.Equal(t, "Тестовый ответ на POST-запрос", response, "Ожидался ответ Тестовый ответ на POST-запрос")
+	assert.Nil(t, err)
+	assert.Equal(t, "Test response for POST request", response)
 }

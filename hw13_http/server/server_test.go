@@ -4,17 +4,30 @@ package server
 import (
 	"net/http"
 	"net/http/httptest"
+	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
 
-func TestHandlerRequest(t *testing.T) {
-	req, err := http.NewRequest("GET", "/example", nil)
-	assert.NoError(t, err, "Не должно быть ошибок при создании запроса")
-	recorder := httptest.NewRecorder()
-	handlerRequest(recorder, req)
-	assert.Equal(t, http.StatusOK, recorder.Code, "Ответ не соответствует ожидаемому")
-	expectedResponse := "Привет, я первый сервер"
-	assert.Equal(t, expectedResponse, recorder.Body.String(), "Тело ответа не соответствует ожидаемому")
+func TestHandlerGet(t *testing.T) {
+	req, err := http.NewRequest("GET", "/example?msg=Hello", nil)
+	assert.NoError(t, err)
+
+	rr := httptest.NewRecorder()
+	handlerGet(rr, req)
+
+	assert.Equal(t, http.StatusOK, rr.Code)
+	assert.Equal(t, "Hey, i'm first server and you message :Hello\n\n", rr.Body.String())
+}
+
+func TestHandlerPost(t *testing.T) {
+	req, err := http.NewRequest("POST", "/example?msg=Greetings", strings.NewReader(""))
+	assert.NoError(t, err)
+
+	rr := httptest.NewRecorder()
+	handlerPost(rr, req)
+
+	assert.Equal(t, http.StatusOK, rr.Code)
+	assert.Equal(t, "Answer from POST request: \n Greetings hi, I'm the first server: \n", rr.Body.String())
 }
