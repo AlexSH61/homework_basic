@@ -2,6 +2,7 @@ package client
 
 import (
 	"bytes"
+	"context"
 	"fmt"
 	"io"
 	"net/http"
@@ -9,7 +10,12 @@ import (
 
 func SendGetRequest(serverURL, path string) (string, error) {
 	url := fmt.Sprintf("http://%s/%s", serverURL, path)
-	response, err := http.Get(url)
+	req, err := http.NewRequestWithContext(context.Background(), "GET", url, nil)
+	if err != nil {
+		return "", err
+	}
+
+	response, err := http.DefaultClient.Do(req)
 	if err != nil {
 		return "", err
 	}
@@ -25,7 +31,14 @@ func SendGetRequest(serverURL, path string) (string, error) {
 
 func SendPostRequest(serverURL, path string, payload []byte) (string, error) {
 	url := fmt.Sprintf("http://%s/%s", serverURL, path)
-	response, err := http.Post(url, "application/json", bytes.NewBuffer(payload))
+	req, err := http.NewRequestWithContext(context.Background(), "POST", url, bytes.NewBuffer(payload))
+	if err != nil {
+		return "", err
+	}
+
+	req.Header.Set("Content-Type", "application/json")
+
+	response, err := http.DefaultClient.Do(req)
 	if err != nil {
 		return "", err
 	}

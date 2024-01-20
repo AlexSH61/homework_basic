@@ -15,7 +15,6 @@ func main() {
 		log.Println("Using: main <address> <port>")
 		os.Exit(1)
 	}
-
 	address := os.Args[1]
 	port := os.Args[2]
 	go server.StartServer(address, port)

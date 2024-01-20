@@ -1,33 +1,52 @@
-// server_test.go
 package server
 
 import (
+	"context"
 	"net/http"
 	"net/http/httptest"
 	"strings"
 	"testing"
-
-	"github.com/stretchr/testify/assert"
 )
 
 func TestHandlerGet(t *testing.T) {
-	req, err := http.NewRequest("GET", "/example?msg=Hello", nil)
-	assert.NoError(t, err)
+	req, err := http.NewRequestWithContext(context.Background(), "GET", "/example?msg=Hello", nil)
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	rr := httptest.NewRecorder()
-	handlerGet(rr, req)
+	handler := http.HandlerFunc(handlerGet)
 
-	assert.Equal(t, http.StatusOK, rr.Code)
-	assert.Equal(t, "Hey, i'm first server and you message :Hello\n\n", rr.Body.String())
+	handler.ServeHTTP(rr, req)
+
+	if status := rr.Code; status != http.StatusOK {
+		t.Errorf("handler returned wrong status code: got %v want %v", status, http.StatusOK)
+	}
+
+	expected := "Hey, i'm first server and you message :Hello"
+	actual := strings.TrimSpace(rr.Body.String())
+	if actual != expected {
+		t.Errorf("handler returned unexpected body: got %v want %v", actual, expected)
+	}
 }
 
 func TestHandlerPost(t *testing.T) {
-	req, err := http.NewRequest("POST", "/example?msg=Greetings", strings.NewReader(""))
-	assert.NoError(t, err)
+	req, err := http.NewRequestWithContext(context.Background(), "POST", "/example?msg=Greetings", strings.NewReader(""))
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	rr := httptest.NewRecorder()
-	handlerPost(rr, req)
+	handler := http.HandlerFunc(handlerPost)
 
-	assert.Equal(t, http.StatusOK, rr.Code)
-	assert.Equal(t, "Answer from POST request: \n Greetings hi, I'm the first server: \n", rr.Body.String())
+	handler.ServeHTTP(rr, req)
+
+	if status := rr.Code; status != http.StatusOK {
+		t.Errorf("handler returned wrong status code: got %v want %v", status, http.StatusOK)
+	}
+
+	expected := "Answer from POST request: \n Greetings hi, I'm the first server: \n"
+	if rr.Body.String() != expected {
+		t.Errorf("handler returned unexpected body: got %v want %v", rr.Body.String(), expected)
+	}
 }

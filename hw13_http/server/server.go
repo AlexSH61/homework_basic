@@ -4,13 +4,19 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"time"
 )
 
 func StartServer(address, port string) {
 	http.HandleFunc("/example", handlerRequest)
 	serverAddress := fmt.Sprintf("%s:%s", address, port)
 	fmt.Printf("Server listening on:  %s\n", serverAddress)
-	err := http.ListenAndServe(serverAddress, nil)
+	server := &http.Server{
+		Addr:         serverAddress,
+		ReadTimeout:  10 * time.Second,
+		WriteTimeout: 10 * time.Second,
+	}
+	err := server.ListenAndServe()
 	if err != nil {
 		fmt.Println("Error starting server:", err)
 	}
