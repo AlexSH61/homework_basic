@@ -2,9 +2,16 @@ package readenv
 
 import "os"
 
-func ReadEnv() (string, string, string) {
-	FileEnv := os.Getenv("LOG_ANALYZER_FILE")
-	LevelEnv := os.Getenv("LOG_ANALYZER_LEVEL")
-	OutputEnv := os.Getenv("LOG_ANALYZER_OUTPUT")
-	return FileEnv, LevelEnv, OutputEnv
+type LogAnalyzerEnv struct {
+	File   string
+	Level  string
+	Output string
+}
+
+func ReadEnv() *LogAnalyzerEnv {
+	return &LogAnalyzerEnv{
+		File:   os.Getenv("LOG_ANALYZER_FILE"),
+		Level:  os.Getenv("LOG_ANALYZER_LEVEL"),
+		Output: os.Getenv("LOG_ANALYZER_OUTPUT"),
+	}
 }

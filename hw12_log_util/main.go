@@ -5,9 +5,10 @@ import (
 	"log"
 	"os"
 
+	"github.com/spf13/pflag"
+
 	"github.com/AlexSH61/homework_basic/hw12_log_util/readenv"
 	"github.com/AlexSH61/homework_basic/hw12_log_util/utillog"
-	"github.com/spf13/pflag"
 )
 
 func main() {
@@ -17,40 +18,52 @@ func main() {
 		ErrorCount: 1,
 	}
 
-	filePFlag := pflag.StringP("file", "f", "", "путь к анализируемому лог-файлу")
-	levePFlag := pflag.StringP("level", "l", "", "уровень логов")
-	outputPFlag := pflag.StringP("output", "o", "", "путь к файлу для записи")
+	filePFlag := pflag.StringP("file", "f", "", "path to the log file to analyze")
+	levelPFlag := pflag.StringP("level", "l", "", "log level")
+	outputPFlag := pflag.StringP("output", "o", "", "path to the file for writing")
 	pflag.Parse()
-	fileEnv, levelEnv, outputEnv := readenv.ReadEnv()
-	if *filePFlag == "" && fileEnv != "" {
-		*filePFlag = fileEnv
+	env := readenv.ReadEnv()
+	if *filePFlag == "" && env.File != "" {
+		*filePFlag = env.File
 	}
-	if *levePFlag == "" && levelEnv != "" {
-		*levePFlag = levelEnv
+	if *levelPFlag == "" && env.Level != "" {
+		*levelPFlag = env.Level
 	}
-	if *outputPFlag == "" && outputEnv != "" {
-		*outputPFlag = outputEnv
+	if *outputPFlag == "" && env.Output != "" {
+		*outputPFlag = env.Output
 	}
 	file, err := os.Open(*filePFlag)
 	if err != nil {
-		log.Fatalf("Ошибка при открытии лог-файла: %v", err)
+		log.Fatalf("Error opening the log file: %v", err)
 	}
-	if err != nil {
-		log.Fatalf("Ошибка при анализе лог-файла: %v", err)
-	}
-
 	defer func() {
 		if err = file.Close(); err != nil {
-			log.Printf("Ошибка при закрытии лог-файла: %v", err)
+			log.Printf("Error closing the log file: %v", err)
 		}
 	}()
-	stats, err := utillog.AnalyzeLogFile(file, *levePFlag)
-	log.Println("Статистика по умолчанию:")
-	err = utillog.OutputStatistics(stats, *outputPFlag)
+
+	stats, err := utillog.AnalyzeLogFile(file, *levelPFlag)
 	if err != nil {
-		fmt.Printf("Ошибка при выводе статистики: %v", err)
+		log.Fatalf("Error analyzing the log file: %v", err)
 	}
-	log.Printf("Инфо: %d\n", defaultStats.InfoCount)
-	log.Printf("Предупреждения: %d\n", defaultStats.WarnCount)
-	log.Printf("Ошибки: %d\n", defaultStats.ErrorCount)
+
+	outputWriter := os.Stdout
+	if *outputPFlag != "" {
+		fileOutput, err := os.Create(*outputPFlag)
+		if err != nil {
+			log.Fatalf("Error creating the file: %v", err)
+		}
+		defer fileOutput.Close()
+		outputWriter = fileOutput
+	}
+
+	log.Println("Default statistics:")
+	err = utillog.OutputStatistics(stats, outputWriter)
+	if err != nil {
+		fmt.Printf("Error outputting statistics: %v", err)
+	}
+
+	log.Printf("Info: %d\n", defaultStats.InfoCount)
+	log.Printf("Warnings: %d\n", defaultStats.WarnCount)
+	log.Printf("Errors: %d\n", defaultStats.ErrorCount)
 }

@@ -2,9 +2,9 @@ package utillog
 
 import (
 	"bufio"
+	"fmt"
 	"io"
 	"log"
-	"os"
 	"strings"
 )
 
@@ -39,24 +39,11 @@ func AnalyzeLogFile(reader io.Reader, logLevel string) (*LogStat, error) {
 	return stats, nil
 }
 
-func OutputStatistics(stats *LogStat, outputFilePath string) error {
-	var output io.Writer
-
-	if outputFilePath != "" {
-		file, err := os.Create(outputFilePath)
-		if err != nil {
-			return err
-		}
-		defer file.Close()
-		output = bufio.NewWriter(file)
-	} else {
-		output = os.Stdout
-	}
+func OutputStatistics(stats *LogStat, output io.Writer) error {
 	log.SetOutput(output)
-	log.Println("Log Statistics:")
-	log.Printf("Info: %d\n", stats.InfoCount)
-	log.Printf("Warning: %d\n", stats.WarnCount)
-	log.Printf("Error: %d\n", stats.ErrorCount)
-
+	fmt.Fprintln(output, "Log Statistics:")
+	fmt.Fprintf(output, "Info: %d\n", stats.InfoCount)
+	fmt.Fprintf(output, "Warning: %d\n", stats.WarnCount)
+	fmt.Fprintf(output, "Error: %d\n", stats.ErrorCount)
 	return nil
 }
