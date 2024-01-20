@@ -5,10 +5,9 @@ import (
 	"log"
 	"os"
 
-	"github.com/spf13/pflag"
-
 	"github.com/AlexSH61/homework_basic/hw12_log_util/readenv"
 	"github.com/AlexSH61/homework_basic/hw12_log_util/utillog"
+	"github.com/spf13/pflag"
 )
 
 func main() {
@@ -32,26 +31,26 @@ func main() {
 	if *outputPFlag == "" && env.Output != "" {
 		*outputPFlag = env.Output
 	}
-	file, err := os.Open(*filePFlag)
-	if err != nil {
-		log.Fatalf("Error opening the log file: %v", err)
+	file, errOpen := os.Open(*filePFlag)
+	if errOpen != nil {
+		log.Printf("Error opening the log file: %v", errOpen)
 	}
 	defer func() {
-		if err = file.Close(); err != nil {
-			log.Printf("Error closing the log file: %v", err)
+		if errOpen = file.Close(); errOpen != nil {
+			log.Printf("Error closing the log file: %v", errOpen)
 		}
 	}()
 
 	stats, err := utillog.AnalyzeLogFile(file, *levelPFlag)
 	if err != nil {
-		log.Fatalf("Error analyzing the log file: %v", err)
+		log.Printf("Error analyzing the log file: %v", err)
 	}
 
 	outputWriter := os.Stdout
 	if *outputPFlag != "" {
-		fileOutput, err := os.Create(*outputPFlag)
-		if err != nil {
-			log.Fatalf("Error creating the file: %v", err)
+		fileOutput, errOutput := os.Create(*outputPFlag)
+		if errOutput != nil {
+			log.Printf("Error creating the file: %v", errOutput)
 		}
 		defer fileOutput.Close()
 		outputWriter = fileOutput

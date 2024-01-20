@@ -39,7 +39,10 @@ func TestOutputStatistics(t *testing.T) {
 	err := OutputStatistics(stats, &buffer)
 	assert.NoError(t, err, "Unexpected error")
 
-	expectedOutput := fmt.Sprintf("Log Statistics:\nInfo: %d\nWarning: %d\nError: %d\n", stats.InfoCount, stats.WarnCount, stats.ErrorCount)
+	expectedOutput := fmt.Sprintf(
+		"Log Statistics:\nInfo: %d\nWarning: %d\nError: %d\n",
+		stats.InfoCount, stats.WarnCount, stats.ErrorCount,
+	)
 
 	actualOutput := buffer.String()
 
