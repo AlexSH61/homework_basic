@@ -1,0 +1,8 @@
+go 1.20
+module github.com/AlexSH61/homework_basic/hw14_sql
+
+require (
+    github.com/github.com/AlexSH61/homework_basic/hw14_sql v1.2.3
+ v0.0.0-20220101000000-abcdef012345
+    hw14_sql v0.0.0-20220101000000-abcdef012345
+)
