@@ -2,21 +2,23 @@ package server
 
 import (
 	"fmt"
-	"io"
 	"net/http"
 	"time"
 
-	"github.com/AlexSH61/homework_basic/hw15_go_sql/database"
+	db "github.com/AlexSH61/homework_basic/hw15_go_sql/database"
 )
 
-var db *database.DB
+type Handler struct {
+	database *db.DataBase
+}
 
-func SetDB(database *database.DB) {
-	db = database
+func NewHandler(database *db.DataBase) *Handler {
+	return &Handler{database: database}
 }
 
 func StartServer(address, port string) {
-	http.HandleFunc("/example", handlerRequest)
+	h := NewHandler(nil)
+	http.HandleFunc("/example", h.handlerRequest)
 	serverAddress := fmt.Sprintf("%s:%s", address, port)
 	fmt.Printf("Server listening on:  %s\n", serverAddress)
 	server := &http.Server{
@@ -30,61 +32,85 @@ func StartServer(address, port string) {
 	}
 }
 
-func handlerRequest(w http.ResponseWriter, r *http.Request) {
+func (h *Handler) HandlerPost(w http.ResponseWriter, r *http.Request) {
+	tx, err := h.database.BeginTransaction()
+	if err != nil {
+		http.Error(w, "error start transation", http.StatusInternalServerError)
+		return
+	}
+	defer func() {
+		if p := recover(); p != nil {
+			tx.Rollback()
+			panic(p)
+		} else if err != nil {
+			tx.Rollback()
+			http.Error(w, "error sql", http.StatusInternalServerError)
+		} else {
+			tx.Commit()
+		}
+	}()
+	_, err = tx.Exec("INSERT INTO schema_store.users (name, email, password) VALUES ('sasha','ninja@gmail.com','1234')")
+	if err != nil {
+		http.Error(w, fmt.Sprintf("Error sql query : %v", err), http.StatusInternalServerError)
+		return
+	}
+	_, err = tx.Exec("UPDATE schema_store.Users SET name = 'pasha' WHERE id = 1")
+	if err != nil {
+		http.Error(w, fmt.Sprintf("Error sql query : %v", err), http.StatusInternalServerError)
+		return
+	}
+	_, err = tx.Exec("DELETE FROM schema_store.users WHERE id = 1")
+	if err != nil {
+		http.Error(w, fmt.Sprintf("Error sql query : %v", err), http.StatusInternalServerError)
+		return
+	}
+	_, err = tx.Exec("INSERT INTO schema_store.products (name, price) VALUES ('book1', 19.99)")
+	if err != nil {
+		http.Error(w, fmt.Sprintf("Error sql query : %v", err), http.StatusInternalServerError)
+		return
+	}
+	_, err = tx.Exec("INSERT INTO schema_store.products (name, price) VALUES ('book1', 19.99)")
+	if err != nil {
+		http.Error(w, fmt.Sprintf("Error sql query : %v", err), http.StatusInternalServerError)
+		return
+	}
+}
+func (h *Handler) HandlerGet(w http.ResponseWriter, r *http.Request) {
+	tx, err := h.database.BeginTransaction()
+	if err != nil {
+		http.Error(w, "error start transation: %v", http.StatusInternalServerError)
+	}
+	defer func() {
+		if p := recover(); p != nil {
+			tx.Rollback()
+			panic(p)
+		} else if err != nil {
+			tx.Rollback()
+			http.Error(w, "error sql", http.StatusInternalServerError)
+		} else {
+			tx.Commit()
+		}
+	}()
+	_, err = tx.Query("SELECT * FROM schema_store.users")
+	if err != nil {
+		http.Error(w, fmt.Sprintf("error sql query : %v", err), http.StatusInternalServerError)
+	}
+	_, err = tx.Query("SELECT * FROM schema_store.products")
+	if err != nil {
+		http.Error(w, fmt.Sprintf("error sql query : %v", err), http.StatusInternalServerError)
+	}
+	_, err = tx.Query("SELECT * FROM schema_store.orders WHERE user_id = 1")
+	if err != nil {
+		http.Error(w, fmt.Sprintf("error sql query : %v", err), http.StatusInternalServerError)
+	}
+}
+func (h *Handler) handlerRequest(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case http.MethodGet:
-		handlerGet(w, r)
+		h.HandlerGet(w, r)
 	case http.MethodPost:
-		handlerPost(w, r)
+		h.HandlerPost(w, r)
 	default:
-		http.Error(w, "Method not supported", http.StatusMethodNotAllowed)
+		http.Error(w, "Method  not supported", http.StatusMethodNotAllowed)
 	}
-}
-
-func handlerGet(w http.ResponseWriter, r *http.Request) {
-	msg := r.URL.Query().Get("msg")
-	fmt.Printf("GET request from %s\n", r.RemoteAddr)
-	if msg == "" {
-		fmt.Fprintln(w, "Empty")
-	} else {
-		err := db.InsertUser("sasha", "ninja@gmail.com", "1234")
-		if err != nil {
-			fmt.Println("Error inserting user:", err)
-			http.Error(w, "Error inserting user", http.StatusInternalServerError)
-			return
-		}
-		err = db.UpdateUserName(1, "pasha")
-		if err != nil {
-			fmt.Println("Error inserting user:", err)
-			http.Error(w, "Error inserting user", http.StatusInternalServerError)
-			return
-		}
-		err = db.DeleteUser(1)
-		if err != nil {
-			fmt.Println("Error inserting user:", err)
-			http.Error(w, "Error inserting user", http.StatusInternalServerError)
-			return
-		}
-
-		response := fmt.Sprintf("Hey, I'm the first server and your message is: %s\n", msg)
-		fmt.Fprintln(w, response)
-	}
-}
-
-func handlerPost(w http.ResponseWriter, r *http.Request) {
-	fmt.Printf("POST request %s from: %s\n", r.URL.Query().Get("msg"), r.RemoteAddr)
-	msg := r.URL.Query().Get("msg")
-	body, err := io.ReadAll(r.Body)
-	if err != nil {
-		http.Error(w, "Error reading request", http.StatusBadRequest)
-		return
-	}
-	err = db.UpdateUserName(1, "pasha")
-	if err != nil {
-		fmt.Println("Error updating user name:", err)
-		http.Error(w, "Error updating user name", http.StatusInternalServerError)
-		return
-	}
-	responseData := fmt.Sprintf("Answer from POST request: \n %s hi, : %s\n", msg, body)
-	fmt.Fprint(w, responseData)
 }

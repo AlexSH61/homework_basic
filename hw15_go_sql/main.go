@@ -1,32 +1,30 @@
+// main.go
 package main
 
 import (
 	"fmt"
+	"net/http"
 
-	"github.com/AlexSH61/homework_basic/hw15_go_sql/database"
+	"github.com/AlexSH61/homework_basic/hw15_go_sql/config"
+	db "github.com/AlexSH61/homework_basic/hw15_go_sql/database"
 	"github.com/AlexSH61/homework_basic/hw15_go_sql/server"
 )
 
 func main() {
-	dbConfig := database.Config{
-		ServerHost: "localhost",
-		ServerPort: "8400",
-		PgHost:     "127.0.0.1",
-		PgPort:     "5432",
-		PgUser:     "hw14_sql",
-		PgPassword: "1234",
-		PgNameBD:   "hw14_sql_db",
-	}
-
-	db, err := database.NewDB(dbConfig)
+	cfg, err := config.ReadConfig("setting.cfg")
 	if err != nil {
-		fmt.Println("Error initializing database:", err)
+		fmt.Println("error read configurate")
+	}
+	dbConn, err := db.NewDataBase(cfg)
+	if err != nil {
+		fmt.Println("Error initializing the database:", err)
 		return
 	}
+	defer dbConn.Close()
+	handlers := server.NewHandler(dbConn)
 
-	defer db.Close()
+	http.HandleFunc("/post", handlers.HandlerPost)
+	http.HandleFunc("/get", handlers.HandlerGet)
 
-	server.SetDB(db)
-
-	server.StartServer("127.0.0.1", "8081")
+	server.StartServer(cfg.ServerHost, cfg.ServerPort)
 }
