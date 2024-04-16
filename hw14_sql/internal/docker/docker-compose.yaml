@@ -1,0 +1,16 @@
+version: '3.8'
+services:
+  pgdb:
+    image: "postgres:14"
+    container_name: "hw14_sql"
+    environment:
+    - POSTGRES_USER=aleksandr
+    - POSTGRES_PASSWORD=pwd1234
+    ports:
+    - "54320:5432"
+    volumes:
+    - /Users/aleksandr/postgres/db/data:/var/lib/postgresql/data
+  app:
+    build: .
+    ports:
+      -"8080:8080"

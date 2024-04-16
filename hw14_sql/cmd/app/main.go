@@ -10,7 +10,7 @@ import (
 )
 
 func main() {
-	connStr := fmt.Sprintf("%s://%s/%s@%s:%s/%s?sslmode=disable&connect_timeout=%d",
+	connStr := fmt.Sprintf("%s://%s:%s@%s:%s/%s?sslmode=disable&connect_timeout=%d",
 		"postgres",
 		url.QueryEscape("aleksandr"),
 		url.QueryEscape("pwd1234"),
