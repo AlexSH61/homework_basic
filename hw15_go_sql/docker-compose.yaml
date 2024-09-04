@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  hw14_sql:
+    image: "postgres:15"
+    container_name: "hw14_sql"
+    environment:
+      POSTGRES_USER: aleksandr
+      POSTGRES_PASSWORD: pwd1234
+    ports:
+      - "5432:5432"
+    volumes:
+      - /Users/aleksandr/homework_basic/hw15_go_sql/database:/var/lib/postgresql/data
